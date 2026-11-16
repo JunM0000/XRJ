@@ -62,7 +62,7 @@
   .rec { display: grid; grid-auto-flow: column; grid-auto-columns: minmax(160px, 44%); gap: 10px; overflow-x: auto; padding: 2px 2px 8px; scrollbar-width: none; }
   .rec::-webkit-scrollbar { display: none; }
   @media (min-width: 720px) { .rec { grid-auto-columns: minmax(180px, 23%); } }
-  .rc { background: var(--card); border-radius: 16px; overflow: hidden; box-shadow: 0 1px 3px rgba(40,25,10,.08); display: flex; flex-direction: column; cursor: pointer; }
+  .rc { background: var(--card); border-radius: 16px; overflow: hidden; box-shadow: 0 1px 3px rgba(40,25,10,.08); display: flex; flex-direction: column; border-top: 4px solid var(--gold); }
   .rc .im { aspect-ratio: 4 / 3; background: linear-gradient(135deg, #f6e7c9, #efd6a6); display: flex; align-items: center; justify-content: center; font-size: 34px; color: var(--gold2); }
   .rc .im img { width: 100%; height: 100%; object-fit: cover; display: block; }
   .rc .tx { padding: 9px 11px 11px; }
@@ -118,8 +118,8 @@
       + '<div class="pr">' + price(p) + '</div></div>';
   }
   function card(p) {
-    return '<div class="rc" data-p="' + p.id + '"><div class="im">' + (p.img ? '<img loading="lazy" alt="" src="' + p.img + '">' : (p.star ? '⭐' : '🔥')) + '</div>'
-      + '<div class="tx"><div class="z">' + esc(p.name_zh || p.name_en) + '</div><div class="e">' + esc(p.name_zh ? p.name_en || '' : '') + '</div><div class="pr">' + price(p) + '</div></div></div>';
+    return '<div class="rc" data-p="' + p.id + '">'
+      + '<div class="tx"><div class="z">' + esc(p.name_zh || p.name_en) + tags(p) + '</div><div class="e">' + esc(p.name_zh ? p.name_en || '' : '') + '</div><div class="pr">' + price(p) + '</div></div></div>';
   }
   function draw() {
     var has = function (k) { return D.categories.some(function (c) { return (c.menu || 'food') === k && D.products.some(function (p) { return p.category_id === c.id; }); }); };
@@ -167,7 +167,7 @@
   document.getElementById('main').addEventListener('click', function (e) {
     var el = e.target.closest('[data-p]'); if (!el) return;
     var p = D.products.find(function (x) { return x.id === +el.dataset.p; });
-    if (p && (p.img || el.classList.contains('rc'))) show(p.id);
+    if (p && p.img) show(p.id);
   });
   document.getElementById('nav').addEventListener('click', function (e) {
     var a = e.target.closest('a'); if (!a) return; e.preventDefault();
